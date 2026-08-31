@@ -14,7 +14,7 @@ public class Line
     public int[] nowbit;
     public int line;
     public int[] power;
-    public void set(int type, float bit, int[] nowbit, int line, int[] power)
+    public Line(int type, float bit, int[] nowbit,  int line, int[] power)
     {
         this.type = type;
         this.bit = bit;
@@ -26,6 +26,10 @@ public class Line
 public class Bar
 {
     public List<Line> notes;
+    public Bar(List<Line> notes)
+    {
+        this.notes = notes;
+    }
 }
 public class Song
 {
@@ -109,30 +113,20 @@ public class bms_test : MonoBehaviour
         audio.Play();
         audio.volume = 0;
         audio.resource = Resources.Load<AudioResource>($"{data.nowsong_name}_AU");
-        //audio.resource = Resources.Load<AudioResource>($"����(����)_AU");//����(����)_AU
         start = false;
         playsong.bars = new List<Bar>();
         string filepath;
-        #if UNITY_EDITOR
-                string fileName = $"/bms/{data.nowsong_name}_{data.nowdiffi_name}.bms";
-        filepath = Application.dataPath + fileName;
-        #endif
         filepath = Application.streamingAssetsPath + $"/bms/{data.nowsong_name}_{data.nowdiffi_name}.bms";
 
         string files = File.ReadAllText(filepath);
 
         string[] bmsData = files.Split('\n');
-        //string[] bmsData = File.ReadAllLines($"Assets/Resources/bms/{data.nowsong_name}_{data.nowdiffi_name}.bms");
-        //string[] bmsData = File.ReadAllLines($"Assets/Resources/bms/����(����)_star.bms");
         background.sprite = Resources.Load<Sprite>($"{data.nowsong_name}_IMAGE");
         load.GetComponent<Image>().sprite = Resources.Load<Sprite>($"{data.nowsong_name}_IMAGE");
         foreach (string sr in bmsData)
         {
             if (!string.IsNullOrWhiteSpace(sr))
             {
-                //Debug.Log(sr.Trim() == "*---------------------- HEADER FIELD");
-                //Debug.Log("*---------------------- HEADER FIELD");
-                //Debug.Log("asdfs"+sr+"asdf");
                 if (sr.Trim() == "*---------------------- HEADER FIELD")
                 {
                     now = read_sta.head;
@@ -215,20 +209,10 @@ public class bms_test : MonoBehaviour
                     {
                         while (playsong.bars.Count < bar)
                         {
-                            playsong.bars.Add(new Bar());
-                            playsong.bars[playsong.bars.Count - 1] = new Bar();
-                            playsong.bars[playsong.bars.Count - 1].notes = new List<Line>();
+                            playsong.bars.Add(new Bar(new List<Line>()));
                         }
                     }
-                    playsong.bars[bar - 1].notes.Add(new Line()); //������ ������ �κ�
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].bit = bit;
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].nowbit = nowbit;
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].type = type;
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].power = power;
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].line = line;
-
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1] = new Line();
-                    playsong.bars[bar - 1].notes[playsong.bars[bar - 1].notes.Count - 1].set(type, bit, nowbit, line, power);
+                    playsong.bars[bar - 1].notes.Add(new Line(type, bit, nowbit, line, power)); //������ ������ �κ�
 
                     //Debug.Log(playsong.bars[0].notes.Count);
                     //Debug.Log("��" + bar);

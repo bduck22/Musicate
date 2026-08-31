@@ -161,10 +161,10 @@ public class judgement : MonoBehaviour
                             booooom[linenum - 1].GetComponent<boooomoff>().stop = false;
                             long_wait[linenum - 1] = false;
                             ftime = note.GetComponent<Long>().end.transform.position.y;
-                            if (0.185f <= Mathf.Abs(ftime) / speed)//ftime - 0.235f >= -judgeob.transform.position.y/speed
+                            if (0.185f <= Mathf.Abs(ftime) / speed)
                             {
                                 data.combo = 0;
-                                text.text = "MISS";//�ճ�Ʈ�ʹ�������
+                                text.text = "MISS";
                                 data.judge[5]++;
                                 text.color = new Color(255, 0, 0);
                             }
